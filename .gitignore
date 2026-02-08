@@ -1,0 +1,11 @@
+__pycache__/
+.mypy_cache/
+.packages/
+.venv/
+.snowflake/
+.tmp/
+data/dryrun/
+**/.tmp.*
+app.zip
+dependencies.zip
+requirements.snowflake.txt
