@@ -1,0 +1,4 @@
+azure-identity>=1.21.0,<1.22.0
+azure-storage-blob>=12.25.1,<12.26.0
+snowflake-snowpark-python>=1.30.0,<1.31.0
+xmltodict>=0.14.2,<0.15.0
