@@ -1,0 +1,11 @@
+definition_version: 1.1
+snowpark:
+  project_name: "XML_files_ingestion"
+  stage_name: "dev_deployment_stg"
+  src: "app/"
+
+  procedures:
+    - name: unpack_xmls
+      handler: "procedures.unpack_xmls"
+      signature:
+      returns: string

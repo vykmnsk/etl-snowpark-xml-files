@@ -1,0 +1,45 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-24.04
+
+steps:
+
+- bash: python --version
+  displayName: 'Python version'
+
+- bash: pip install -r reqs.txt
+  displayName: 'Install python libs'
+
+- bash: pip freeze
+  displayName: 'Display installed python libs'
+
+- bash: pip install snowflake-cli==3.7.2 && snow --version
+  displayName: 'Install snowpark'
+
+- bash: python az_blob_move.py dev processing
+  displayName: 'Move files to work dir'
+  env:
+     AZURE_CLIENT_ID: $(azure.client.id)
+     AZURE_CLIENT_SECRET: $(azure.client.secret)
+     AZURE_TENANT_ID: $(azure.tenant.id)
+
+- bash: |
+    snow snowpark build -x
+    snow snowpark deploy --replace -x
+    snow snowpark execute procedure "unpack_xmls()" -x
+  displayName: 'Build, Deploy, Exec the app into Snowflake'
+  continueOnError: false
+  env:
+    SNOWFLAKE_ACCOUNT: $(snowflake.account)
+    SNOWFLAKE_USER: $(snowflake.user)
+    SNOWFLAKE_PASSWORD: $(snowflake.password)
+    SNOWFLAKE_ROLE: $(snowflake.role)
+
+- bash: python az_blob_move.py processing dev
+  displayName: 'Move ingested files out of work dir'
+  env:
+     AZURE_CLIENT_ID: $(azure.client.id)
+     AZURE_CLIENT_SECRET: $(azure.client.secret)
+     AZURE_TENANT_ID: $(azure.tenant.id)

@@ -40,4 +40,4 @@
 ### Deploy function(s) and procedure(s) to Snowflake and execute there
     snow snowpark build
     snow snowpark deploy --replace
-    snow snowpark execute procedure "unpack_smrs()"
+    snow snowpark execute procedure "unpack_xmls()"
